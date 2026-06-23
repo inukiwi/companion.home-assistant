@@ -638,26 +638,19 @@ The following parameters can be mixed and matched together to style the progress
 
 - `progress_points`: A list of markers displayed as points along the progress bar to highlight specific milestones or thresholds.
   - **Required property**: `position`. The position on the progress bar where the point should appear (must be between 0 and `progress_max`).
-  - **Optional property**: `color`. Hex color code (including '#') for the point (for example, `"#ffde03"`).
+  - **Optional properties**:
+    - `color`. Hex color code (including '#') for the point (for example, `"#ffde03"`).
+    - `icon`. Material Design Icons only, use format `mdi:icon-name` (for example, `mdi:home` or `mdi:download`). Limited use on Android, see note below.
+    - `accessibility_name`. ![iOS](/assets/iOS.svg)A text used to describe the point when using `voice over`
 
-##### Progress icons
+:::note
+![Android](/assets/android.svg) Icons for points are limited to three positions:
 
-- `progress_start_icon`: Icon displayed at the start of the progress bar. For example: `"mdi:battery-10"`.
-  - **Format**: Material Design Icons only, use format `mdi:icon-name` (for example, `mdi:home` or `mdi:download`).
-- `progress_end_icon`: Icon displayed at the end of the progress bar. For example: `"mdi:battery"`
-  - **Format**: Material Design Icons only, use format `mdi:icon-name` (for example, `mdi:flag-checkered` or `mdi:check-circle`).
-- `progress_tracker_icon`. Icon displayed in a circular badge that tracks the current progress position. For example: `"mdi:lightning-bolt"`.
-  - **Format**: Material Design Icons only, use format `mdi:icon-name` (for example, `mdi:car` or `mdi:walk`).
+- If the point is at position `0` or `progress_max`: the icon will be displayed before or after the progress bar.
+- If the point is at position `progress` the icon will be displayed on the progress bar itself.
+- If a point is at any other position, the `icon` property will be ignored.
 
-**Icon colors**
-
-- `progress_start_color`. Color for the start icon. For example: `"#ff0000"`.
-  - **Default**: System accent color.
-- `progress_end_color`: Color for the end icon. For example: `"#00ff00"`.
-  - **Default**: System accent color.
-- `progress_tracker_color`. Color for the tracker icon. For example: `"#ffde03"`.
-  - **Default**: System primary color.
-  - `tracker` will be shown in a circle at the current progress
+:::
 
 ```yaml
 automation:
@@ -676,11 +669,15 @@ automation:
             - length: 20
               color: "#ff0000"
             progress_points:
+            - position: 0
+              icon: mdi:battery-10
+            - position: 50
+              icon: mdi:lightning-bolt
+              color: "#ffde03"
             - position: 80
-            progress_start_icon: mdi:battery-10
-            progress_end_icon: mdi:battery
-            progress_tracker_icon: mdi:lightning-bolt
-            progress_tracker_color: "#ffde03"
+              accessibility_name: "Charge limit"
+            - position: 100
+              icon: mdi:battery
             tag: progress_style_notification
 ```
 
